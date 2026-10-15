@@ -1,0 +1,406 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @NAME@ @VERSION@, part of the Clean theme collection by Tamás Baka. */
+
+/* Shared stylesheet of the Clean themes for Thunderbird and Betterbird 153.
+ * Two surfaces (content, chrome), one hairline, one accent.
+ * Every colour is a light-dark() pair, so the same file serves light and dark.
+ * !important is needed throughout: the application's own sheets load after this one. */
+
+@media not (prefers-contrast) {
+  /* ---------- 1. Palette and token overrides ---------- */
+  :root {
+    --cl-content: light-dark(#ffffff, #1c1c1e);
+    --cl-chrome: light-dark(#f0f0f3, #29292c);
+    --cl-hairline: light-dark(#e4e4e8, #38383c);
+    --cl-text: light-dark(#1d1d1f, #f2f2f4);
+    --cl-text-2: light-dark(#6e6e73, #a1a1a8);
+    --cl-hover: light-dark(rgba(0, 0, 0, 0.05), rgba(255, 255, 255, 0.07));
+    --cl-pill: light-dark(rgba(0, 0, 0, 0.09), rgba(255, 255, 255, 0.13));
+    --cl-field: light-dark(rgba(0, 0, 0, 0.06), rgba(255, 255, 255, 0.1));
+    --cl-radius: 7px;
+    --cl-field-border: light-dark(#d9d9de, #48484d);
+    /* Accent: the system accent colour (AccentColor, with AccentColorText
+       for text on top of it). "fill" is for filled areas such as the
+       selected message; "ink" is for icons and text on the surface, and is
+       mixed toward white in dark mode so a dark accent stays readable.
+       Thanks to u/KenzieDamage on Reddit for this and the status bar fix below. */
+    --cl-accent: AccentColor;
+    --cl-accent-text: AccentColorText;
+    --cl-accent-ink: light-dark(AccentColor, color-mix(in srgb, AccentColor, white 40%));
+    --selected-item-color: var(--cl-accent) !important;
+    --selected-item-text-color: var(--cl-accent-text) !important;
+    --new-subject-color: var(--cl-accent-ink) !important;
+    --in-content-accent-color: var(--cl-accent) !important;
+    --in-content-focus-outline-color: var(--cl-accent-ink) !important;
+
+    /* Surfaces: 0 and 1 collapse into one content colour.
+       2-4 remain only as control states (button, hover, pressed). */
+    --layout-background-0: var(--cl-content) !important;
+    --layout-background-1: var(--cl-content) !important;
+    --layout-background-2: light-dark(#f0f0f3, #29292c) !important;
+    --layout-background-3: light-dark(#e9e9ed, #333337) !important;
+    --layout-background-4: light-dark(#dedee3, #3e3e43) !important;
+
+    /* The one hairline. Pane splitters and section dividers all read this. */
+    --layout-border-0: var(--cl-hairline) !important;
+
+    /* Window frame, toolbar, tab strip, status bar */
+    --lwt-accent-color: var(--cl-chrome) !important;
+    --lwt-text-color: var(--cl-text) !important;
+    /* Theme mode defaults this to 40% white, which washes out dark toolbars
+       (find bar, compose window toolbars, downloads header). */
+    --toolbar-background-color: var(--cl-chrome) !important;
+    --chrome-content-separator-color: transparent !important;
+    --tabs-toolbar-background-color: transparent !important;
+    --tabs-toolbar-box-shadow: none !important;
+
+    /* Spaces bar */
+    --spaces-bg-color: var(--cl-chrome) !important;
+    --spaces-bg-image: none !important;
+
+    /* Global search field */
+    --search-bar-background: var(--cl-field) !important;
+    --search-bar-focus-background: var(--cl-content) !important;
+    --search-bar-border-color: transparent !important;
+    /* Text colour. Thunderbird takes it from the theme's manifest colours,
+       which the Auto themes do not have, and falls back to the system's
+       field text colour (black, even in dark mode). */
+    --search-bar-color: var(--cl-text) !important;
+    --toolbar-field-color: var(--cl-text) !important;
+    --toolbar-field-text-color-focus: var(--cl-text) !important;
+
+    /* Folder pane */
+    --sidebar-background-color: var(--cl-chrome) !important;
+    --new-folder-color: var(--layout-color-1) !important;
+
+    /* Folder rows: soft borderless pill */
+    --listbox-border-radius: var(--cl-radius) !important;
+    --list-container-border: transparent !important;
+    --list-container-border-hover: transparent !important;
+    --list-container-border-selected: transparent !important;
+    --list-container-border-selected-current: transparent !important;
+    --list-container-border-selected-focused: transparent !important;
+    --list-container-border-selected-current-focused: transparent !important;
+    --list-container-background-hover: var(--cl-hover) !important;
+    --list-container-background-selected: var(--cl-pill) !important;
+    --list-container-background-selected-current: var(--cl-pill) !important;
+    --list-container-background-selected-focused: var(--cl-pill) !important;
+    --list-container-background-selected-current-focused: var(--cl-pill) !important;
+
+    /* Folder icons: one colour */
+    --folder-color-inbox: var(--cl-accent-ink) !important;
+    --folder-color-draft: var(--cl-accent-ink) !important;
+    --folder-color-sent: var(--cl-accent-ink) !important;
+    --folder-color-archive: var(--cl-accent-ink) !important;
+    --folder-color-spam: var(--cl-accent-ink) !important;
+    --folder-color-trash: var(--cl-accent-ink) !important;
+    --folder-color-template: var(--cl-accent-ink) !important;
+    --folder-color-newsletter: var(--cl-accent-ink) !important;
+    --folder-color-rss: var(--cl-accent-ink) !important;
+    --folder-color-outbox: var(--cl-accent-ink) !important;
+    --folder-color-folder: var(--cl-accent-ink) !important;
+    --folder-color-folder-filter: var(--cl-accent-ink) !important;
+    --folder-color-folder-rss: var(--cl-accent-ink) !important;
+
+    /* Message list: flat rows instead of outlined cards */
+    --tree-view-bg: var(--cl-content) !important;
+    --tree-pane-background: var(--cl-content) !important;
+    --tree-card-background: transparent !important;
+    --tree-card-border: transparent !important;
+    --tree-card-border-hover: transparent !important;
+    --tree-card-border-focus: transparent !important;
+    --tree-card-border-selected: transparent !important;
+    --tree-card-border-selected-unfocused: transparent !important;
+    --tree-card-border-hover-spam: transparent !important;
+    --tree-card-border-selected-spam: transparent !important;
+    --tree-card-background-current: var(--cl-hover) !important;
+    --tree-card-background-selected: var(--selected-item-color) !important;
+    --tree-card-background-selected-current: var(--selected-item-color) !important;
+    --tree-card-background-current-unfocused: var(--cl-hover) !important;
+    --tree-card-background-selected-unfocused: var(--cl-pill) !important;
+    --tree-card-background-selected-current-unfocused: var(--cl-pill) !important;
+    --tree-card-background-selected-current-unfocused-hover: var(--cl-pill) !important;
+  }
+
+  /* ---------- 2. Window frame, toolbar, tab strip ---------- */
+  #navigation-toolbox {
+    background-color: var(--cl-chrome) !important;
+    background-image: none !important;
+  }
+
+  unified-toolbar {
+    border-block-end-color: transparent !important;
+  }
+
+  #tabs-toolbar {
+    background-image: none !important;
+    box-shadow: none !important;
+    padding: 2px 6px 6px !important;
+  }
+
+  /* The selected tab carries an empty "selected" attribute, never the
+     value "true", so these rules only check that it is present.
+     Thanks to u/KenzieDamage on Reddit for spotting this. */
+  .tabmail-tab {
+    border-radius: var(--cl-radius) !important;
+    margin-inline-end: 4px !important;
+
+    &[selected] {
+      box-shadow: none !important;
+    }
+
+    & .tab-background {
+      border-radius: var(--cl-radius) !important;
+    }
+
+    &[selected] .tab-background {
+      background-image: none !important;
+      background-color: var(--cl-content) !important;
+    }
+
+    &:not([selected]):hover .tab-background {
+      background-color: var(--cl-hover) !important;
+    }
+  }
+
+  .tab-line {
+    display: none !important;
+  }
+
+  /* ---------- 3. Spaces bar ---------- */
+  /* Colour only: the 1px border is part of the bar's width calculation. */
+  .spaces-toolbar:not([hidden]) {
+    border-inline-end-color: transparent !important;
+  }
+
+  /* ---------- 3b. Status bar ---------- */
+  /* Without manifest colours (the Auto themes) nothing paints the status bar,
+     and on desktops with transparency the desktop shows through. Painted
+     here in every theme. The window root stays transparent on purpose:
+     Betterbird keeps it that way for the rounded window corners. */
+  #status-bar {
+    background-color: var(--cl-chrome) !important;
+    background-image: none !important;
+    color: var(--cl-text) !important;
+    border-block-start-color: transparent !important;
+  }
+
+  /* ---------- 4. Folder pane ---------- */
+  #folderTree > li:not(:first-of-type) > .mode-container {
+    border-block-start-color: transparent !important;
+  }
+
+  #folderTree li > .container {
+    min-block-size: calc(var(--list-item-min-height) + 4px) !important;
+    margin-inline: 8px !important;
+  }
+
+  /* Account rows use a separate colour variable; bring them in line. */
+  #folderTree li[data-server-type] > .container > .icon {
+    --icon-color: var(--cl-accent-ink) !important;
+  }
+
+  /* Account names are bold by default, which stacks with bold unread folders. */
+  #folderTree li[data-server-type] > .container > .name {
+    font-weight: normal !important;
+  }
+
+  /* Small gap where the account rows start after the unified folders */
+  #folderTree li:not([data-server-type]) + li[data-server-type] {
+    margin-block-start: 10px !important;
+  }
+
+  /* Dragging onto a folder: the default highlight relied on a border. */
+  #folderTree li[role="treeitem"].drop-target > .container {
+    background-color: color-mix(in srgb, var(--selected-item-color) 25%, transparent) !important;
+  }
+
+  /* Counts: plain numbers. Unread in the accent colour, total in gray. */
+  .folder-count-badge {
+    background-color: transparent !important;
+    border: none !important;
+    padding-inline: 2px !important;
+  }
+
+  .unread-count {
+    color: var(--cl-accent-ink) !important;
+    font-weight: 600 !important;
+  }
+
+  .total-count {
+    color: var(--cl-text-2) !important;
+  }
+
+  /* Pane dividers: no line. The 1px the splitter occupies takes the content
+     colour, so folder pane and list are separated by the colour change alone.
+     Hover and drag still highlight the splitter. Column resizers in the table
+     header are a different element and keep their lines.
+     The list/reader divider is only removed in the three-column layout; where
+     the reader sits below the list, both are the same colour and the hairline
+     is the only thing separating them. */
+  #folderPaneSplitter:not(:hover, .splitter-resizing),
+  body.layout-vertical #messagePaneSplitter:not(:hover, .splitter-resizing) {
+    border-color: var(--cl-content) !important;
+  }
+
+  /* Backdrop of the three-pane view. It shows through hairline gaps between
+     panes on fractionally scaled displays, so it takes the content colour. */
+  body[class*="layout-"] {
+    background-color: var(--cl-content) !important;
+  }
+
+  /* ---------- 5. List header and quick filter bar ---------- */
+  .list-header-bar:not([hidden]) {
+    border-block-end-color: transparent !important;
+    padding-inline: 8px !important;
+  }
+
+  /* Same height for the folder pane header and the list header, so their
+     contents sit on one line. 50px is an estimate of the folder header's
+     natural height at default density; a smaller value would leave it taller
+     than the list header. The reader header is matched
+     in the profile stylesheet. */
+  .list-header-bar:not([hidden]),
+  #folderPaneHeaderBar:not([hidden]) {
+    box-sizing: border-box !important;
+    min-block-size: 50px !important;
+  }
+
+  /* The status bar already shows the total; this frees room for the folder name. */
+  #threadPaneFolderCount {
+    display: none !important;
+  }
+
+  /* Gutter between list and reader in the three-column layout */
+  body.layout-vertical #messagePane {
+    padding-inline-start: 12px !important;
+  }
+
+  #quick-filter-bar {
+    background-color: var(--cl-content) !important;
+    border-block-end-color: transparent !important;
+  }
+
+  /* ---------- 6. Compose window ---------- */
+  /* To/Cc/Bcc and Subject fields: keep an outline so it is clear where to
+     type, but in a soft gray. The focused field keeps its accent outline. */
+  .address-container:not([focused="true"]),
+  #msgSubject:not(:focus) {
+    border-color: var(--cl-field-border) !important;
+  }
+
+  .address-container,
+  #msgSubject {
+    border-radius: 6px !important;
+  }
+
+  /* Paragraph and font dropdowns in the formatting toolbar: flat until
+     hovered or opened, instead of the system-drawn outlined box. */
+  #FormatToolbar > menulist {
+    appearance: none !important;
+    border-radius: 6px !important;
+    padding-inline: 6px 4px !important;
+  }
+
+  #FormatToolbar > menulist:not([open="true"]) {
+    border-color: transparent !important;
+  }
+
+  /* ---------- 7. Message list (card view) ---------- */
+  #threadTree[rows="thread-card"] {
+    /* Inset hairline between rows */
+    & .card-layout > td {
+      background: linear-gradient(var(--cl-hairline), var(--cl-hairline)) no-repeat 14px 100% / calc(100% - 28px) 1px !important;
+      padding-inline-end: 8px !important;
+    }
+
+    /* Thread children keep their own indent */
+    & .card-layout:not([data-properties~="thread-children"]) > td {
+      padding-inline-start: 8px !important;
+    }
+
+    /* Vertical balance (three-line cards only). The third line (attachment,
+       star, junk, "N replies") is often empty, so the text sits high.
+       Betterbird fixes the row height and clips what does not fit, so the
+       6px added above is paid for by dropping the 3px bottom padding and
+       taking 1px off each of the two gaps between lines. The two-line card
+       layout has no empty line and is left alone. */
+    &:not(.cards-row-compact) .card-container .thread-card-column {
+      padding-block: calc(var(--thread-pane-container-gap) + 6px) 0 !important;
+      gap: max(0px, calc(var(--thread-pane-container-gap) - 1px)) !important;
+    }
+
+    &:not(.cards-row-compact) .card-container .thread-card-dynamic-row {
+      row-gap: max(0px, calc(var(--thread-card-content-gap) - 1px)) !important;
+    }
+
+    /* Sender picture added by the Auto Profile Picture extension:
+       more room between it and the text (the extension sets 1px). */
+    & .card-container .recipient-avatar {
+      margin-inline-end: 9px !important;
+    }
+
+    /* Rows without a picture are indented by the extension to line up with
+       the others; widen that indent by the same 8px (its defaults are 4px,
+       and 1px for 60px-high rows). */
+    & .card-layout {
+      --placeholder-margin: 12px !important;
+    }
+
+    & .card-layout[style="height: 60px;"] {
+      --placeholder-margin: 9px !important;
+    }
+
+    /* Date: smaller and quieter than the sender */
+    & .card-container .date {
+      font-size: 0.85rem !important;
+      opacity: 0.6 !important;
+    }
+
+    /* Read mail steps back: regular-weight sender, gray subject.
+       Unread keeps the default bold sender and subject. */
+    & .card-layout:not([data-properties~="unread"]) .card-container .sender {
+      font-weight: normal !important;
+    }
+
+    & .card-layout:not([data-properties~="unread"]) .card-container .subject {
+      color: var(--cl-text-2) !important;
+    }
+
+    /* Unread dot in the accent colour */
+    & .card-layout[data-properties~="unread"]:not([data-properties~="new"]) {
+      --read-status-fill: var(--cl-accent-ink) !important;
+      --read-status-stroke: var(--cl-accent-ink) !important;
+    }
+
+    /* Per-row menu and empty star appear on hover or keyboard focus only */
+    & .card-layout:not(:hover, :focus-within) .tree-button-more,
+    & .card-layout:not(:hover, :focus-within, [data-properties~="flagged"]) .button-star {
+      opacity: 0 !important;
+    }
+  }
+
+  /* Selected message while the list has focus: solid accent, light text.
+     Set on the row itself so hover and junk variants cannot undo it. */
+  #threadTree[rows="thread-card"] [is="tree-view-table-body"]:is(:focus, :focus-within) .card-layout.selected {
+    --tree-card-background: var(--selected-item-color) !important;
+    --new-subject-color: currentColor !important;
+    --read-status-fill: currentColor !important;
+    --read-status-stroke: currentColor !important;
+
+    & .card-container {
+      color: var(--selected-item-text-color) !important;
+    }
+
+    & .card-container .date {
+      opacity: 0.8 !important;
+    }
+
+    & .card-container .subject {
+      color: inherit !important;
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "manifest_version": 2,
+  "name": "Clean Mono Light",
+  "description": "Fewer borders and a single surface colour everywhere. Light.",
+  "version": "1.1.2",
+  "author": "Tamás Baka",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "clean-mono-light@tamasbaka.clean-themes",
+      "strict_min_version": "153.0"
+    }
+  },
+  "theme": {
+    "colors": {
+      "frame": "#f0f0f3",
+      "tab_background_text": "#1d1d1f",
+      "toolbar": "#ffffff",
+      "toolbar_field": "#ffffff",
+      "toolbar_field_text": "#1d1d1f",
+      "toolbar_field_border": "#d9d9de"
+    },
+    "properties": {
+      "color_scheme": "light",
+      "content_color_scheme": "light"
+    }
+  },
+  "theme_experiment": {
+    "stylesheet": "theme.css"
+  }
+}

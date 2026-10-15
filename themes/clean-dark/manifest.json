@@ -1,0 +1,30 @@
+{
+  "manifest_version": 2,
+  "name": "Clean Dark",
+  "description": "Fewer borders, two surfaces and one accent colour. Dark.",
+  "version": "1.1.2",
+  "author": "Tamás Baka",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "clean-dark@tamasbaka.clean-themes",
+      "strict_min_version": "153.0"
+    }
+  },
+  "theme": {
+    "colors": {
+      "frame": "#29292c",
+      "tab_background_text": "#f2f2f4",
+      "toolbar": "#29292c",
+      "toolbar_field": "#3a3a3d",
+      "toolbar_field_text": "#f2f2f4",
+      "toolbar_field_border": "#4a4a4e"
+    },
+    "properties": {
+      "color_scheme": "dark",
+      "content_color_scheme": "dark"
+    }
+  },
+  "theme_experiment": {
+    "stylesheet": "theme.css"
+  }
+}

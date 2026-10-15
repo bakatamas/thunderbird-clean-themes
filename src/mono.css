@@ -1,0 +1,64 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * Mono additions of the Clean themes. The build script appends this file
+ * to src/theme.css for the three Mono themes. */
+
+/* ================================================================
+ * Single-surface variant (Clean Mono Light, Dark and Auto).
+ * Everything above is shared with Clean Light / Clean Dark; this block
+ * is the only difference.
+ * ================================================================ */
+@media not (prefers-contrast) {
+  /* One surface: tab strip, spaces bar, folder pane and status bar take the
+     content colour instead of a tint. Only the window header keeps it. */
+  :root {
+    --cl-chrome: var(--cl-content);
+    --cl-header: light-dark(#f0f0f3, #29292c);
+    /* The spaces bar is drawn on top of the window's left edge. Transparent,
+       so the header band and the content colour show through it. */
+    --spaces-bg-color: transparent !important;
+  }
+
+  /* The window itself is transparent behind the spaces bar (Betterbird keeps
+     it that way for the rounded window corners). The content area and the
+     status bar start to the right of the bar, so their colour is extended
+     left underneath it, the same way as the header band below. */
+  #messengerBody,
+  #status-bar {
+    box-shadow: calc(-1 * var(--spaces-total-width, 0px)) 0 0 0 var(--cl-content) !important;
+  }
+
+  /* Window header (search field, window buttons): tinted band. The colour sits
+     on the toolbox, which spans the full window width and carries the
+     window's rounded top corners, so the band follows them. The tab strip
+     below it is painted in the content colour, extended left underneath the
+     spaces bar; that extension is not at a window corner. */
+  #navigation-toolbox {
+    background-color: var(--cl-header) !important;
+  }
+
+  #tabs-toolbar {
+    background-color: var(--cl-content) !important;
+    box-shadow: calc(-1 * var(--spaces-total-width, 0px)) 0 0 0 var(--cl-content) !important;
+  }
+
+  /* Tabs: no pill. The active tab is told apart by its text colour. */
+  .tabmail-tab[selected] .tab-background {
+    background-color: transparent !important;
+  }
+
+  .tabmail-tab:not([selected]) {
+    color: var(--cl-text-2) !important;
+  }
+
+  /* Folder pane and message list are no longer told apart by colour, and
+     there is no divider line, so the list gets a wider gutter. The pane has
+     no background of its own, so it is given the content colour; otherwise
+     the gutter shows the layer behind it. */
+  #threadPane {
+    background-color: var(--cl-content) !important;
+    padding-inline-start: 10px !important;
+  }
+}
