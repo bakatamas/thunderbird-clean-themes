@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.4 (2026-10-22)
+
+- Conversations stylesheet: the notification bars (blocked remote content, junk, outbox, calendar invitations) get a faint accent tint, rounded corners and pill-shaped buttons instead of the add-on's cyan. The scam and OpenPGP warnings are a soft red tint instead of a solid red bar. The themes themselves are unchanged.
+
 ## 1.1.3 (2026-10-22)
 
 - Window buttons on Linux: hovering minimise or maximise filled the button with the text colour and hid the icon on KDE. They now get a light tint instead. Close keeps its own hover colour.

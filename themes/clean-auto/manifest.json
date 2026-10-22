@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Clean Auto",
   "description": "Fewer borders, two surfaces and one accent colour. Follows the system light or dark setting.",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "author": "Tamás Baka",
   "browser_specific_settings": {
     "gecko": {
