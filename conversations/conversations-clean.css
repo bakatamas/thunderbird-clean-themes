@@ -84,6 +84,80 @@
     padding-top: 12px !important;
   }
 
+  /* ---------- Notification bars ---------- */
+
+  /* Remote content, junk, outbox and calendar bars: a faint accent tint
+     instead of the add-on's cyan (navy in dark), rounded and inset to line
+     up with the message header. Only one bar shows per message.
+     Markup checked against Conversations 4.3.16. flow-root keeps the
+     calendar buttons, which the add-on floats to the end, inside the bar. */
+  .notificationBar {
+    display: flow-root !important;
+    margin: 0 10px 10px !important;
+    padding: 8px 12px !important;
+    border-color: transparent !important;
+    border-radius: 7px !important;
+    background-color: color-mix(in srgb, AccentColor 10%, light-dark(#ffffff, #1c1c1e)) !important;
+    color: light-dark(#1d1d1f, #f2f2f4) !important;
+  }
+
+  .notificationBar > svg-icon {
+    color: light-dark(AccentColor, color-mix(in srgb, AccentColor, white 40%)) !important;
+  }
+
+  /* Remote content links: accent text, underlined only on hover */
+  .notificationBar a.link {
+    color: light-dark(AccentColor, color-mix(in srgb, AccentColor, white 40%)) !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+  }
+
+  .notificationBar a.link:hover,
+  .notificationBar a.link:focus {
+    text-decoration: underline !important;
+  }
+
+  /* Actions: "Not junk", "Send unsent" and "Ignore warning" are links,
+     calendar answers are buttons. Both become quiet pills. */
+  .notificationBar > span:not(.show-remote-content, .always-display) > a,
+  .notificationBar > button {
+    display: inline-block !important;
+    margin: 2px 0 2px 4px !important;
+    padding: 1px 10px !important;
+    border: 0 !important;
+    border-radius: 6px !important;
+    background-color: light-dark(rgba(0, 0, 0, 0.09), rgba(255, 255, 255, 0.13)) !important;
+    color: inherit !important;
+    font: inherit !important;
+    text-decoration: none !important;
+  }
+
+  .notificationBar > span:not(.show-remote-content, .always-display) > a:hover,
+  .notificationBar > button:hover {
+    background-color: light-dark(rgba(0, 0, 0, 0.15), rgba(255, 255, 255, 0.2)) !important;
+  }
+
+  /* Scam warning and OpenPGP/S/MIME problems stay red, as a soft tint
+     with a red icon instead of a solid red bar */
+  .phishingBar,
+  .openpgpBar {
+    background-color: color-mix(in srgb, light-dark(#c4152d, #ff6b7a) 13%, light-dark(#ffffff, #1c1c1e)) !important;
+  }
+
+  .phishingBar > svg-icon,
+  .openpgpBar > svg-icon {
+    color: light-dark(#c4152d, #ff6b7a) !important;
+  }
+
+  /* Doubled class to outrank the :not() selector of the pills above */
+  .phishingBar.notificationBar > span > a {
+    background-color: color-mix(in srgb, light-dark(#c4152d, #ff6b7a) 18%, transparent) !important;
+  }
+
+  .phishingBar.notificationBar > span > a:hover {
+    background-color: color-mix(in srgb, light-dark(#c4152d, #ff6b7a) 28%, transparent) !important;
+  }
+
   /* ---------- Reply area ---------- */
 
   /* Reply, reply-all, reply-to-list and forward arrows under each message:

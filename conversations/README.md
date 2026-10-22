@@ -18,6 +18,7 @@ You only need it if you use Thunderbird Conversations. Without that add-on it do
 - Uses the same background colour as the themes, in light and dark
 - Turns the quick reply box into a plain text label with no box, fill or line around it
 - Hides the reply, reply-all, reply-to-list and forward arrows under each message (all four are still in the message's own menu, and replying is also available from the reply fields)
+- Shows the notification bars (blocked remote content, junk, outbox, calendar invitations) with a faint accent tint and rounded corners, and the scam and OpenPGP warnings as a soft red tint instead of a solid red bar
 - Shows the "Forward this conversation" and "Print this conversation" links as small gray text
 - In the expanded quick reply form: rounded fields with a soft outline and no fill, a filled send button and a quiet discard button
 
