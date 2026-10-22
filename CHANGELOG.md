@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.3 (2026-10-22)
+
+- Window buttons on Linux: hovering minimise or maximise filled the button with the text colour and hid the icon on KDE. They now get a light tint instead. Close keeps its own hover colour.
+- Dialog windows on macOS: the title bar of dialogs such as folder properties showed the window behind it, and the reminder window was see-through. Their background is now painted.
+
 ## 1.1.2 (2026-10-13)
 
 - Tabs: the selected tab carries an empty `selected` attribute, so the tab rules now check that it is present instead of looking for `selected="true"`. The active tab gets the content colour, hovering it no longer tints it, and in the Mono themes only inactive tabs are gray. Thanks to u/KenzieDamage.
