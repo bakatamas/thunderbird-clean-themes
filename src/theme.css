@@ -9,6 +9,10 @@
  * Every colour is a light-dark() pair, so the same file serves light and dark.
  * !important is needed throughout: the application's own sheets load after this one. */
 
+/* Prefix only, for telling XUL dialogs from HTML ones; unprefixed selectors
+   still match any namespace. */
+@namespace xul url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
 @media not (prefers-contrast) {
   /* ---------- 1. Palette and token overrides ---------- */
   :root {
@@ -170,6 +174,20 @@
     display: none !important;
   }
 
+  /* Window buttons drawn by Thunderbird (Linux). On KDE, hovering minimise or
+     maximise filled the button with the text colour, while the icon keeps
+     the system's dark or light glyph, so the icon vanished. A light tint of
+     the text colour instead, at the strengths Thunderbird uses elsewhere on
+     Linux (Adwaita and Yaru rest at 10%, so the hover has to stay above
+     that); close keeps its own hover colour. */
+  .titlebar-button:not(.titlebar-close):hover > .toolbarbutton-icon {
+    background-color: color-mix(in srgb, var(--cl-text) 15%, transparent) !important;
+  }
+
+  .titlebar-button:not(.titlebar-close):hover:active > .toolbarbutton-icon {
+    background-color: color-mix(in srgb, var(--cl-text) 30%, transparent) !important;
+  }
+
   /* ---------- 3. Spaces bar ---------- */
   /* Colour only: the 1px border is part of the bar's width calculation. */
   .spaces-toolbar:not([hidden]) {
@@ -179,13 +197,26 @@
   /* ---------- 3b. Status bar ---------- */
   /* Without manifest colours (the Auto themes) nothing paints the status bar,
      and on desktops with transparency the desktop shows through. Painted
-     here in every theme. The window root stays transparent on purpose:
-     Betterbird keeps it that way for the rounded window corners. */
+     here in every theme. The main window's root stays transparent on
+     purpose: Betterbird keeps it that way for the rounded window corners.
+     Dialog windows are painted in 3c. */
   #status-bar {
     background-color: var(--cl-chrome) !important;
     background-image: none !important;
     color: var(--cl-text) !important;
     border-block-start-color: transparent !important;
+  }
+
+  /* ---------- 3c. Dialog windows ---------- */
+  /* On macOS the title bar of dialogs (folder properties, event summary)
+     showed the window behind it, and the reminder window was see-through
+     except for its controls. The window root is painted here; only dialog
+     windows are matched, so the main window keeps its transparent root.
+     XUL dialogs only: the address book has an HTML <dialog> in the same
+     place and paints its own root. */
+  :root:is(:has(> body > xul|dialog), #calendar-alarm-dialog) {
+    background-color: var(--cl-chrome) !important;
+    background-image: none !important;
   }
 
   /* ---------- 4. Folder pane ---------- */
