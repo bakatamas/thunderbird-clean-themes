@@ -2,7 +2,7 @@
 
 ## 1.1.5 (2026-10-28)
 
-- Compose window: restyled to match the main window. Only the toolbar is tinted, with a filled accent Send button and accent icons. The From, To and Subject fields are borderless rows divided by thin lines, addresses are soft pills without the unknown-contact dot, and Cc/Bcc sit at the end of the From row. The formatting bar has accent icons, and the message body is a rounded, framed card with space around it. Attachments are pills, and the contacts sidebar uses the window tint with pill-shaped To/Cc/Bcc buttons. The menu bar stays visible.
+- Compose window: restyled to match the main window. Only the toolbar is tinted, with a filled accent Send button and accent icons. The From, To and Subject fields are borderless rows divided by thin lines, addresses are soft pills without the unknown-contact dot, and Cc/Bcc sit at the end of the From row. The formatting bar has accent icons, and the message body is a rounded, framed card with space around it. Attachments are pills, and the contacts sidebar uses the window tint with pill-shaped To/Cc/Bcc buttons. The menu bar stays visible. Thanks to u/oslogrolls for the idea.
 - Reminder window: reminders sit on the page colour as rows with a soft hover, the selected one is a pill, and the Snooze and Dismiss buttons are pills.
 
 ## 1.1.4 (2026-10-22)
