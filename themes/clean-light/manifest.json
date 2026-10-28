@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Clean Light",
   "description": "Fewer borders, two surfaces and one accent colour. Light.",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "author": "Tamás Baka",
   "browser_specific_settings": {
     "gecko": {

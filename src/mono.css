@@ -53,6 +53,17 @@
     color: var(--cl-text-2) !important;
   }
 
+  /* Compose window: the toolbar keeps the header tint, like the main
+     window's header. The contacts sidebar is now the page colour, so its
+     splitter keeps a hairline. */
+  #compose-toolbox > toolbar {
+    background-color: var(--cl-header) !important;
+  }
+
+  #contactsSplitter:not(:hover, .splitter-resizing) {
+    border-color: var(--cl-hairline) !important;
+  }
+
   /* Folder pane and message list are no longer told apart by colour, and
      there is no divider line, so the list gets a wider gutter. The pane has
      no background of its own, so it is given the content colour; otherwise

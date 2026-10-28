@@ -25,7 +25,6 @@
     --cl-pill: light-dark(rgba(0, 0, 0, 0.09), rgba(255, 255, 255, 0.13));
     --cl-field: light-dark(rgba(0, 0, 0, 0.06), rgba(255, 255, 255, 0.1));
     --cl-radius: 7px;
-    --cl-field-border: light-dark(#d9d9de, #48484d);
     /* Accent: the system accent colour (AccentColor, with AccentColorText
        for text on top of it). "fill" is for filled areas such as the
        selected message; "ink" is for icons and text on the surface, and is
@@ -219,6 +218,69 @@
     background-image: none !important;
   }
 
+  /* Reminder window: the list is a page on the tinted window, reminders
+     are rows with a soft hover, and the selected one (which shows its
+     details and buttons) is a pill, as in the folder pane. */
+  #alarm-richlist {
+    appearance: none !important;
+    background-color: var(--cl-content) !important;
+    color: var(--cl-text) !important;
+    border: none !important;
+    border-radius: var(--cl-radius) !important;
+    padding: 4px !important;
+    margin: 12px 12px 8px !important;
+  }
+
+  #alarm-richlist > richlistitem {
+    border: none !important;
+    border-radius: var(--cl-radius) !important;
+    outline: none !important;
+    color: var(--cl-text) !important;
+    /* Same padding selected or not, so the row doesn't jump. */
+    padding: 8px 10px !important;
+
+    &:not([selected]):hover {
+      background-color: var(--cl-hover) !important;
+    }
+
+    &[selected] {
+      background-color: var(--cl-pill) !important;
+    }
+
+    & :is(.alarm-date-label, .alarm-location-description, .alarm-relative-date-label) {
+      color: var(--cl-text-2) !important;
+    }
+
+    & .alarm-details-label {
+      color: var(--cl-accent-ink) !important;
+    }
+  }
+
+  /* Snooze and Dismiss, per reminder and for all: pill buttons, like To/Cc/Bcc
+     in the compose window's contacts sidebar. */
+  #calendar-alarm-dialog :is(#alarm-richlist button, #alarm-actionbar > button) {
+    appearance: none !important;
+    border: none !important;
+    border-radius: var(--cl-radius) !important;
+    background-color: var(--cl-pill) !important;
+    background-image: none !important;
+    color: var(--cl-text) !important;
+    padding: 5px 12px !important;
+
+    &:not([disabled]):is(:hover, [open]) {
+      background-color: color-mix(in srgb, var(--cl-text) 15%, transparent) !important;
+    }
+
+    /* Snooze is disabled for reminders in read-only calendars. */
+    &[disabled] {
+      opacity: 0.5 !important;
+    }
+  }
+
+  #alarm-actionbar {
+    margin: 0 12px 12px !important;
+  }
+
   /* ---------- 4. Folder pane ---------- */
   #folderTree > li:not(:first-of-type) > .mode-container {
     border-block-start-color: transparent !important;
@@ -316,16 +378,239 @@
   }
 
   /* ---------- 6. Compose window ---------- */
-  /* To/Cc/Bcc and Subject fields: keep an outline so it is clear where to
-     type, but in a soft gray. The focused field keeps its accent outline. */
-  .address-container:not([focused="true"]),
-  #msgSubject:not(:focus) {
-    border-color: var(--cl-field-border) !important;
+  /* Same layout as the main window: the toolbar is the tinted band, and
+     everything below it (header fields, formatting bar, body, attachments)
+     is one page in the content colour. Everything keeps a 16px gutter from
+     the window edge; the body is a framed card inside it. */
+
+  /* Toolbar buttons: borderless, soft hover. The same variables also draw
+     the formatting buttons. Scoped to the two toolbars because the
+     header fields read --toolbarbutton-hover-bordercolor for their border. */
+  #compose-toolbox,
+  #FormatToolbox {
+    --toolbarbutton-hover-bordercolor: transparent !important;
+    --toolbarbutton-active-bordercolor: transparent !important;
+    --toolbarbutton-hover-boxshadow: none !important;
+    --toolbarbutton-active-boxshadow: none !important;
+    --toolbarbutton-background-color-hover: var(--cl-hover) !important;
+    --toolbarbutton-checked-background: var(--cl-pill) !important;
+    --toolbarbutton-background-color-active: var(--cl-pill) !important;
+    --button-border-radius: var(--cl-radius) !important;
+    /* Groups are set apart by spacing alone, as in the main window. */
+    --toolbarseparator-color: transparent !important;
   }
 
-  .address-container,
+  #compose-toolbox::after {
+    border-block-end-color: transparent !important;
+  }
+
+  /* Split buttons (Spelling, Save, Attach): no line between the button and
+     its arrow. */
+  #compose-toolbox .toolbarbutton-menubutton-dropmarker {
+    border-inline-start-color: transparent !important;
+  }
+
+  /* Menu bar and toolbar: the same 16px gutter from the window edge as
+     the page below, room above the menu bar and around the toolbar
+     buttons. Padding on
+     each toolbar, not the toolbox, so Mono's tint on the toolbars covers it. */
+  #compose-toolbox > toolbar {
+    padding-inline: 16px !important;
+  }
+
+  #compose-toolbar-menubar2 {
+    padding-block-start: 6px !important;
+  }
+
+  #composeToolbar2 {
+    padding-block: 6px !important;
+  }
+
+  #composeToolbar2 > .toolbarbutton-1 {
+    --toolbarbutton-icon-fill: var(--cl-accent-ink) !important;
+  }
+
+  /* Send: filled accent button, like New Message in the main window. */
+  #button-send:not([disabled]) {
+    --toolbarbutton-icon-fill: currentColor !important;
+    background-color: var(--cl-accent) !important;
+    color: var(--cl-accent-text) !important;
+    font-weight: 600 !important;
+
+    &:hover {
+      background-color: color-mix(in srgb, var(--cl-accent), black 10%) !important;
+    }
+
+    &:hover:active {
+      background-color: color-mix(in srgb, var(--cl-accent), black 20%) !important;
+    }
+  }
+
+  /* Header block and formatting bar on the page. The id-qualified selector
+     outranks Thunderbird's :root[lwt-tree] rule, which is also !important. */
+  #composeContentBox > :is(#MsgHeadersToolbar, #FormatToolbox),
+  #messageArea {
+    background-color: var(--cl-content) !important;
+    color: var(--cl-text) !important;
+  }
+
+  /* One row per field (From, each recipient row, Subject), separated by an
+     inset hairline. The rows' margins become padding: vertically so the
+     line sits halfway between rows, at the end so every line is the same
+     length (Subject has no end margin, the others have 8px). */
+  #top-gradient-box,
+  .address-row,
+  #subject-box {
+    background: linear-gradient(var(--cl-row-line, var(--cl-hairline)), var(--cl-row-line, var(--cl-hairline))) no-repeat 16px 100% / calc(100% - 32px) 1px !important;
+    padding-block: 3px !important;
+  }
+
+  #top-gradient-box,
+  .address-row {
+    margin-block: 0 !important;
+    margin-inline-end: 0 !important;
+    padding-inline-end: 8px !important;
+  }
+
+  #identityLabel,
+  .address-label-container label,
+  #subjectLabel {
+    color: var(--cl-text-2) !important;
+  }
+
+  /* The row being typed in: accent line and accent label. */
+  #top-gradient-box:has(#msgIdentity:is(:focus-within, [focused="true"])),
+  .address-row:has(.address-container[focused="true"]),
+  #subject-box:has(#msgSubject:focus) {
+    --cl-row-line: var(--cl-accent);
+
+    & :is(#identityLabel, .address-label-container label, #subjectLabel) {
+      color: var(--cl-accent-ink) !important;
+    }
+  }
+
+  /* Fields: no box. The row line and the focused-row accent show where
+     typing goes. A field being dragged onto keeps Thunderbird's highlight. */
+  #msgIdentity,
+  .address-container:not(.drag-address-container),
   #msgSubject {
+    border-color: transparent !important;
+    background-color: transparent !important;
+    outline: none !important;
+    color: inherit !important;
+  }
+
+  #msgIdentity {
+    border-radius: var(--cl-radius) !important;
+
+    &:hover:not(:focus-within, [focused="true"]) {
+      background-color: var(--cl-hover) !important;
+    }
+  }
+
+  /* Subject reads as the page's title. */
+  #msgSubject {
+    font-size: 1.1em !important;
+    font-weight: 600 !important;
+  }
+
+  /* Recipients: soft pills like the folder pane. A selected one takes the
+     accent (Thunderbird's own rule); invalid and key-problem pills keep
+     their warning colours. */
+  .address-pill {
+    border-radius: var(--cl-radius) !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+
+    &:not(.editing, .invalid-address, .key-issue, [selected]) {
+      background-color: var(--cl-pill) !important;
+    }
+
+    &:not(.editing, .invalid-address, .key-issue, [selected]):is(:hover, :focus) {
+      background-color: color-mix(in srgb, var(--cl-text) 15%, transparent) !important;
+    }
+
+    &:not(.editing) {
+      min-block-size: 24px !important;
+      padding-inline: 9px !important;
+    }
+
+    &.editing {
+      box-shadow: inset 0 0 0 1px var(--cl-accent) !important;
+    }
+  }
+
+  /* The dot Thunderbird puts on the corner of a pill whose address is not in
+     the address book. It sat half outside the flat pill like a stray speck;
+     the pill's tooltip still says so. */
+  .pill-indicator {
+    display: none !important;
+  }
+
+  /* Cc, Bcc and the overflow button */
+  #extraAddressRowsArea > button {
     border-radius: 6px !important;
+
+    &:hover {
+      background-color: var(--cl-hover) !important;
+    }
+  }
+
+  .recipient-button {
+    color: var(--cl-accent-ink) !important;
+  }
+
+  #extraAddressRowsMenuButton {
+    color: var(--cl-text-2) !important;
+  }
+
+  /* Cc, Bcc and the overflow button go to the end of the From row, away
+     from the address, so the divider before them is no longer needed. */
+  #extraAddressRowsArea {
+    margin-inline-start: auto !important;
+  }
+
+  #extraAddressRowsArea.addressingWidget-separator::before {
+    display: none !important;
+  }
+
+  /* Formatting bar: accent icons like the toolbar above; an active style
+     (bold on, for example) gets the pill background from the toolbar
+     variables. Inset like the field rows above. */
+  #FormatToolbar {
+    padding-inline: 12px !important;
+  }
+
+  #FormatToolbar > toolbarbutton {
+    color: var(--cl-accent-ink) !important;
+  }
+
+  /* Text and background colour swatches: Thunderbird borders them with the
+     toolbar's active-border variable, which is transparent above. Without a
+     border, a swatch the colour of the page (white on white) disappears. */
+  #FormatToolbar .color-button {
+    border-color: color-mix(in srgb, var(--cl-text) 40%, transparent) !important;
+  }
+
+  /* Message body: a card with a hairline frame and rounded corners, inset
+     16px from the window edge. The body is a separate document the theme
+     cannot style; Thunderbird paints it #2a2a2e in dark mode, lighter than
+     the page, so the frame is drawn on purpose instead of leaving that
+     difference as a stray band. The splitter above it has no line, the
+     card's frame does that job; it can still be dragged. */
+  #messageEditor {
+    margin: 14px 16px 16px !important;
+    border: 1px solid var(--cl-hairline) !important;
+    border-radius: 10px !important;
+    overflow: clip !important;
+  }
+
+  #headersSplitter:not(:hover, .splitter-resizing) {
+    border-color: transparent !important;
+  }
+
+  #attachmentSplitter:not(:hover, .splitter-resizing) {
+    border-color: var(--cl-hairline) !important;
   }
 
   /* Paragraph and font dropdowns in the formatting toolbar: flat until
@@ -338,6 +623,122 @@
 
   #FormatToolbar > menulist:not([open="true"]) {
     border-color: transparent !important;
+  }
+
+  /* Attachments: part of the page. Size in plain gray instead of a badge,
+     files as pills. Selected files keep Thunderbird's own colours. */
+  #attachmentArea,
+  #attachmentArea > summary {
+    background-color: var(--cl-content) !important;
+    color: var(--cl-text) !important;
+  }
+
+  #attachmentArea > summary {
+    padding: 10px 16px !important;
+  }
+
+  #attachmentToggle,
+  #attachmentBucketSize {
+    color: var(--cl-text-2) !important;
+  }
+
+  #attachmentBucketSize {
+    background-color: transparent !important;
+    padding-inline: 0 !important;
+    font-size: inherit !important;
+    font-weight: normal !important;
+  }
+
+  #attachmentBucket {
+    background-color: var(--cl-content) !important;
+    border-block: none !important;
+    padding: 0 16px 14px !important;
+    gap: 8px !important;
+  }
+
+  #attachmentBucket .attachmentItem {
+    border-color: transparent !important;
+    border-radius: var(--cl-radius) !important;
+    padding: 4px 10px !important;
+
+    &:not([selected]) {
+      background-color: var(--cl-pill) !important;
+      color: var(--cl-text) !important;
+    }
+
+    &:not([selected]):hover {
+      background-color: color-mix(in srgb, var(--cl-text) 15%, transparent) !important;
+    }
+
+    &:not([selected]) > .attachmentcell-icon {
+      fill: var(--cl-accent-ink) !important;
+    }
+
+    &:not([selected]) > .attachmentcell-size {
+      color: var(--cl-text-2) !important;
+    }
+  }
+
+  /* Contacts sidebar: tinted like the folder pane, set off from the page by
+     the colour change alone. */
+  #contactsSidebar,
+  #contactsSidebar .sidebar-header {
+    background-color: var(--cl-chrome) !important;
+    background-image: none !important;
+    color: var(--cl-text) !important;
+  }
+
+  #contactsSidebar .sidebar-header {
+    border-block-end-color: transparent !important;
+  }
+
+  #contactsSplitter:not(:hover, .splitter-resizing) {
+    border-color: var(--cl-content) !important;
+  }
+
+  /* The sidebar's content is a separate document (abContactsPanel.xhtml).
+     Its contact list drew a content-coloured box with a line above and
+     below; it takes the sidebar colour instead, like the folder list. */
+  #abContactsPanel {
+    background-color: var(--cl-chrome) !important;
+    --tree-view-bg: var(--cl-chrome) !important;
+    --tree-pane-background: var(--cl-chrome) !important;
+  }
+
+  #abContactsPanel #abResultsTree {
+    background-color: var(--cl-chrome) !important;
+    border-block-color: transparent !important;
+
+    /* Column headers (Name, Address): sidebar colour too, except while
+       hovered or pressed. */
+    & :is(thead, th:not(:hover)) {
+      background-color: var(--cl-chrome) !important;
+    }
+  }
+
+  /* border-box, or the padding widens the body past the sidebar's edge. */
+  #abContactsPanel body {
+    box-sizing: border-box !important;
+    padding: 4px 8px 12px !important;
+  }
+
+  /* Add to To/Cc/Bcc: soft pill buttons instead of system-drawn boxes. */
+  #abContactsPanel :is(#toButton, #ccButton, #bccButton) {
+    appearance: none !important;
+    border: none !important;
+    border-radius: var(--cl-radius) !important;
+    background-color: var(--cl-pill) !important;
+    color: var(--cl-text) !important;
+    padding: 5px 14px !important;
+    margin-block: 3px !important;
+
+    &:not([disabled]):hover {
+      background-color: color-mix(in srgb, var(--cl-text) 15%, transparent) !important;
+    }
+
+    &[disabled] {
+      opacity: 0.5 !important;
+    }
   }
 
   /* ---------- 7. Message list (card view) ---------- */
