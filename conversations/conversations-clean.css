@@ -65,7 +65,7 @@
     opacity: 0.9 !important;
   }
 
-  /* Rounded outline around each message */
+  /* No outline around each message */
   .message,
   .message:focus {
     border-color: transparent !important;

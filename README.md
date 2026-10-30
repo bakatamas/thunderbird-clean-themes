@@ -53,7 +53,7 @@ The themes share one stylesheet:
 - `src/mono.css` is appended to it for the three Mono themes
 - `themes/<name>/manifest.json` holds each theme's name, version and colours
 
-`./build.sh` assembles the six `.xpi` files, copies the Conversations stylesheet and makes one zip of everything, all into `dist/`. It needs `sh`, `sed` and `zip`.
+`./build.sh` assembles the six `.xpi` files, copies the Conversations stylesheet, makes one zip of everything and writes `updates.json`, the update manifest the microsite serves, all into `dist/`. It needs `sh`, `sed` and `zip`.
 
 For a new version, change `"version"` in all six manifests, update the version line at the top of `conversations/conversations-clean.css` and `conversations/README.md`, add an entry to [CHANGELOG.md](CHANGELOG.md), and run the build.
 

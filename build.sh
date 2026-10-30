@@ -12,7 +12,7 @@ cd "$(dirname "$0")"
 
 # Reads a top-level string field from a manifest. Tolerates any indentation
 # and Windows line endings.
-field() { sed -n "s/^ *\"$1\": *\"\([^\"]*\)\".*/\1/p" "$2" | head -n 1; }
+field() { sed -n "s/^[[:space:]]*\"$1\":[[:space:]]*\"\([^\"]*\)\".*/\1/p" "$2" | head -n 1; }
 
 version=$(field version themes/clean-light/manifest.json)
 [ -n "$version" ] || { echo "No version in themes/clean-light/manifest.json" >&2; exit 1; }
@@ -22,9 +22,13 @@ mkdir -p dist/work
 
 for dir in themes/*/; do
   key=$(basename "$dir")
-  manifest="$dir/manifest.json"
+  manifest="${dir}manifest.json"
   name=$(field name "$manifest")
   v=$(field version "$manifest")
+  id=$(field id "$manifest")
+  # A missing name or id would still build, but give a broken stylesheet
+  # header or an updates.json entry no installed theme can match.
+  [ -n "$name" ] && [ -n "$id" ] || { echo "$manifest needs a name and an id." >&2; exit 1; }
   if [ "$v" != "$version" ]; then
     echo "$key is version $v, but clean-light is $version. Update all manifests together." >&2
     exit 1
@@ -33,7 +37,8 @@ for dir in themes/*/; do
   work="dist/work/$key"
   mkdir -p "$work"
   cp "$manifest" "$work/manifest.json"
-  sed "s/@NAME@/$name/; s/@VERSION@/$version/" src/theme.css > "$work/theme.css"
+  name_sed=$(printf '%s' "$name" | sed 's/[\/&]/\\&/g')
+  sed "s/@NAME@/$name_sed/; s/@VERSION@/$version/" src/theme.css > "$work/theme.css"
   case "$key" in
     *mono*) cat src/mono.css >> "$work/theme.css" ;;
   esac
