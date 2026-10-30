@@ -1,5 +1,6 @@
 #!/bin/sh
-# Builds the six theme files (.xpi) and the all-in-one zip into dist/.
+# Builds the six theme files (.xpi), the all-in-one zip and the microsite's
+# updates.json into dist/.
 #
 # Each theme is themes/<name>/manifest.json plus a stylesheet assembled here:
 # src/theme.css, with src/mono.css appended for the Mono themes. The theme
@@ -49,5 +50,29 @@ mkdir -p "dist/work/$bundle"
 cp dist/*.xpi dist/conversations-clean.css dist/conversations-clean-README.md "dist/work/$bundle/"
 (cd dist/work && zip -qrX "../$bundle.zip" "$bundle")
 echo "built dist/$bundle.zip"
+
+# Update manifest for the microsite. Each theme's update_url points at it, and
+# Thunderbird installs the version it lists from the matching download folder.
+base="https://celest-watches.com/clean-themes/downloads/$version"
+{
+  echo '{'
+  echo '  "addons": {'
+  sep=''
+  for dir in themes/*/; do
+    key=$(basename "$dir")
+    id=$(field id "$dir/manifest.json")
+    printf '%s    "%s": {\n' "$sep" "$id"
+    printf '      "updates": [\n'
+    printf '        { "version": "%s", "update_link": "%s/%s-%s.xpi" }\n' "$version" "$base" "$key" "$version"
+    printf '      ]\n'
+    printf '    }'
+    sep=",
+"
+  done
+  echo
+  echo '  }'
+  echo '}'
+} > dist/updates.json
+echo "built dist/updates.json"
 
 rm -rf dist/work

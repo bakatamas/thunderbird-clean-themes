@@ -26,6 +26,8 @@ Screenshots, a before-and-after comparison and more details: **https://celest-wa
 
 To go back, enable one of Thunderbird's built-in themes in the same list.
 
+From version 1.1.7 on, installed themes update themselves like any other add-on. Thunderbird checks once a day, or right away with **Check for Updates** in the gear menu. If you have 1.1.6 or older, install 1.1.7 by hand once.
+
 Requires Thunderbird or Betterbird 153 or later. Made and tested with Betterbird 153 on Linux; Windows and macOS are untested. The themes restyle parts of Thunderbird that can change between releases, so a future update may undo some of the look.
 
 ## Thunderbird Conversations

@@ -7,7 +7,8 @@
   "browser_specific_settings": {
     "gecko": {
       "id": "clean-mono-light@tamasbaka.clean-themes",
-      "strict_min_version": "153.0"
+      "strict_min_version": "153.0",
+      "update_url": "https://celest-watches.com/clean-themes/updates.json"
     }
   },
   "theme": {
