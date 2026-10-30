@@ -27,7 +27,7 @@ The font of the reply text box is left as the add-on sets it.
 ## Tested with
 
 - Betterbird 153.4.0esr (Flatpak, Linux)
-- Thunderbird Conversations, class names as of version 4.3.14
+- Thunderbird Conversations, class names as of version 4.3.14 (notification bars checked against 4.3.16)
 
 The stylesheet itself is the same on every system. The Windows and macOS steps below are written from Thunderbird's standard behaviour and have not been run on those systems, so treat them as untested. The same goes for plain Thunderbird on Linux.
 

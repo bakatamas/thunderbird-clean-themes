@@ -5,7 +5,8 @@
  * conversations-clean.css 1.1.7, part of the Clean theme collection by Tamás Baka. */
 
 /* Restyles the Thunderbird Conversations reader to match the Clean themes.
- * Selectors taken from Thunderbird Conversations 4.3.14.
+ * Selectors taken from Thunderbird Conversations 4.3.14; the notification
+ * bars were checked against 4.3.16.
  * Install as BOTH userContent.css and userChrome.css in the profile's
  * "chrome" folder; the rules only match the add-on's own pages. */
 
@@ -14,268 +15,271 @@
  * stays readable. Thanks to u/KenzieDamage on Reddit for the idea. */
 
 @-moz-document url-prefix("chrome://conversations/") {
-  /* Same content colour as the theme, in light and dark.
-     Screen only, so printing a conversation is unaffected. */
-  @media screen {
-    body {
-      background-color: light-dark(#ffffff, #1c1c1e) !important;
+  /* High-contrast mode is left to Thunderbird, as in the themes. */
+  @media not (prefers-contrast) {
+    /* Same content colour as the theme, in light and dark.
+       Screen only, so printing a conversation is unaffected. */
+    @media screen {
+      body {
+        background-color: light-dark(#ffffff, #1c1c1e) !important;
+      }
+
+      .conversationHeader {
+        background-color: light-dark(#ffffff, #1c1c1e) !important;
+        color: light-dark(#1d1d1f, #f2f2f4) !important;
+      }
+    }
+
+    /* Header: no line, no shadow, same height as the list header (50px) */
+    .conversationHeaderWrapper {
+      box-shadow: none !important;
     }
 
     .conversationHeader {
-      background-color: light-dark(#ffffff, #1c1c1e) !important;
+      border-bottom-color: transparent !important;
+      box-sizing: border-box !important;
+      min-height: 50px !important;
+      align-items: center !important;
+    }
+
+    /* Subject: larger. "div" keeps this off the quick reply subject field. */
+    div.subject {
+      font-size: 1.7rem !important;
+      font-weight: 600 !important;
+      line-height: 2.8rem !important;
+      height: 2.8rem !important;
+    }
+
+    /* Header icons: quiet until hovered, tint instead of a box on hover */
+    .actions-button {
+      opacity: 0.5 !important;
+      border-color: transparent !important;
+      border-radius: 6px !important;
+    }
+
+    .actions-button:hover,
+    .actions-button:focus-visible {
+      opacity: 1 !important;
+      background-color: light-dark(rgba(0, 0, 0, 0.06), rgba(255, 255, 255, 0.1)) !important;
+    }
+
+    /* Unread toggle keeps its blue, so it stays readable */
+    .actions-button.unread {
+      opacity: 0.9 !important;
+    }
+
+    /* No outline around each message */
+    .message,
+    .message:focus {
+      border-color: transparent !important;
+    }
+
+    /* Scroll fix. When a long message opens, the add-on scrolls it to 39px
+       below the top of the page, a position hard-coded for its own shorter
+       header. Under the 50px header above, that hid the top of the message.
+       Moving the 10px list margin into 12px of padding on each message puts
+       the visible content at 51px, just clear of the header. */
+    #messageList {
+      margin-top: 0 !important;
+    }
+
+    .message {
+      padding-top: 12px !important;
+    }
+
+    /* ---------- Notification bars ---------- */
+
+    /* Remote content, junk, outbox and calendar bars: a faint accent tint
+       instead of the add-on's cyan (navy in dark), rounded and inset to line
+       up with the message header. Only one bar shows per message.
+       Markup checked against Conversations 4.3.16. flow-root keeps the
+       calendar buttons, which the add-on floats to the end, inside the bar. */
+    .notificationBar {
+      display: flow-root !important;
+      margin: 0 10px 10px !important;
+      padding: 8px 12px !important;
+      border-color: transparent !important;
+      border-radius: 7px !important;
+      background-color: color-mix(in srgb, AccentColor 10%, light-dark(#ffffff, #1c1c1e)) !important;
       color: light-dark(#1d1d1f, #f2f2f4) !important;
     }
-  }
 
-  /* Header: no line, no shadow, same height as the list header (50px) */
-  .conversationHeaderWrapper {
-    box-shadow: none !important;
-  }
+    .notificationBar > svg-icon {
+      color: light-dark(AccentColor, color-mix(in srgb, AccentColor, white 40%)) !important;
+    }
 
-  .conversationHeader {
-    border-bottom-color: transparent !important;
-    box-sizing: border-box !important;
-    min-height: 50px !important;
-    align-items: center !important;
-  }
+    /* Remote content links: accent text, underlined only on hover */
+    .notificationBar a.link {
+      color: light-dark(AccentColor, color-mix(in srgb, AccentColor, white 40%)) !important;
+      font-weight: 600 !important;
+      text-decoration: none !important;
+    }
 
-  /* Subject: larger. "div" keeps this off the quick reply subject field. */
-  div.subject {
-    font-size: 1.7rem !important;
-    font-weight: 600 !important;
-    line-height: 2.8rem !important;
-    height: 2.8rem !important;
-  }
+    .notificationBar a.link:hover,
+    .notificationBar a.link:focus {
+      text-decoration: underline !important;
+    }
 
-  /* Header icons: quiet until hovered, tint instead of a box on hover */
-  .actions-button {
-    opacity: 0.5 !important;
-    border-color: transparent !important;
-    border-radius: 6px !important;
-  }
+    /* Actions: "Not junk", "Send unsent" and "Ignore warning" are links,
+       calendar answers are buttons. Both become quiet pills. */
+    .notificationBar > span:not(.show-remote-content, .always-display) > a,
+    .notificationBar > button {
+      display: inline-block !important;
+      margin: 2px 0 2px 4px !important;
+      padding: 1px 10px !important;
+      border: 0 !important;
+      border-radius: 6px !important;
+      background-color: light-dark(rgba(0, 0, 0, 0.09), rgba(255, 255, 255, 0.13)) !important;
+      color: inherit !important;
+      font: inherit !important;
+      text-decoration: none !important;
+    }
 
-  .actions-button:hover,
-  .actions-button:focus-visible {
-    opacity: 1 !important;
-    background-color: light-dark(rgba(0, 0, 0, 0.06), rgba(255, 255, 255, 0.1)) !important;
-  }
+    .notificationBar > span:not(.show-remote-content, .always-display) > a:hover,
+    .notificationBar > button:hover {
+      background-color: light-dark(rgba(0, 0, 0, 0.15), rgba(255, 255, 255, 0.2)) !important;
+    }
 
-  /* Unread toggle keeps its blue, so it stays readable */
-  .actions-button.unread {
-    opacity: 0.9 !important;
-  }
+    /* Scam warning and OpenPGP/S/MIME problems stay red, as a soft tint
+       with a red icon instead of a solid red bar */
+    .phishingBar,
+    .openpgpBar {
+      background-color: color-mix(in srgb, light-dark(#c4152d, #ff6b7a) 13%, light-dark(#ffffff, #1c1c1e)) !important;
+    }
 
-  /* No outline around each message */
-  .message,
-  .message:focus {
-    border-color: transparent !important;
-  }
+    .phishingBar > svg-icon,
+    .openpgpBar > svg-icon {
+      color: light-dark(#c4152d, #ff6b7a) !important;
+    }
 
-  /* Scroll fix. When a long message opens, the add-on scrolls it to 39px
-     below the top of the page, a position hard-coded for its own shorter
-     header. Under the 50px header above, that hid the top of the message.
-     Moving the 10px list margin into 12px of padding on each message puts
-     the visible content at 51px, just clear of the header. */
-  #messageList {
-    margin-top: 0 !important;
-  }
+    /* Doubled class to outrank the :not() selector of the pills above */
+    .phishingBar.notificationBar > span > a {
+      background-color: color-mix(in srgb, light-dark(#c4152d, #ff6b7a) 18%, transparent) !important;
+    }
 
-  .message {
-    padding-top: 12px !important;
-  }
+    .phishingBar.notificationBar > span > a:hover {
+      background-color: color-mix(in srgb, light-dark(#c4152d, #ff6b7a) 28%, transparent) !important;
+    }
 
-  /* ---------- Notification bars ---------- */
+    /* ---------- Reply area ---------- */
 
-  /* Remote content, junk, outbox and calendar bars: a faint accent tint
-     instead of the add-on's cyan (navy in dark), rounded and inset to line
-     up with the message header. Only one bar shows per message.
-     Markup checked against Conversations 4.3.16. flow-root keeps the
-     calendar buttons, which the add-on floats to the end, inside the bar. */
-  .notificationBar {
-    display: flow-root !important;
-    margin: 0 10px 10px !important;
-    padding: 8px 12px !important;
-    border-color: transparent !important;
-    border-radius: 7px !important;
-    background-color: color-mix(in srgb, AccentColor 10%, light-dark(#ffffff, #1c1c1e)) !important;
-    color: light-dark(#1d1d1f, #f2f2f4) !important;
-  }
+    /* Reply, reply-all, reply-to-list and forward arrows under each message:
+       hidden, because the arrow next to the time and the reply fields below do
+       the same job, and forward is in the message's own menu. The "edit draft"
+       button stays. */
+    .footerActions action-button:not([type="draft"]) {
+      display: none !important;
+    }
 
-  .notificationBar > svg-icon {
-    color: light-dark(AccentColor, color-mix(in srgb, AccentColor, white 40%)) !important;
-  }
+    /* Reply strip: no tinted band, no line above it, collapsed or expanded */
+    .quickReply:not(.disabled) {
+      background-color: transparent !important;
+      border-top-color: transparent !important;
+      padding: 4px 10px 10px !important;
+    }
 
-  /* Remote content links: accent text, underlined only on hover */
-  .notificationBar a.link {
-    color: light-dark(AccentColor, color-mix(in srgb, AccentColor, white 40%)) !important;
-    font-weight: 600 !important;
-    text-decoration: none !important;
-  }
+    /* Reply field: plain text, no fill and no outline. The label lines up
+       with the message text and darkens on hover. */
+    .replyBox {
+      box-sizing: border-box !important;
+      height: 40px !important;
+      min-height: 40px !important;
+      line-height: 40px !important;
+      padding: 0 !important;
+      border-color: transparent !important;
+      text-align: start !important;
+      font-size: 1.3rem !important;
+      background-color: transparent !important;
+      color: light-dark(#6e6e73, #a1a1a8) !important;
+    }
 
-  .notificationBar a.link:hover,
-  .notificationBar a.link:focus {
-    text-decoration: underline !important;
-  }
+    .replyBox:hover,
+    .replyBox:focus-visible {
+      color: light-dark(#1d1d1f, #f2f2f4) !important;
+    }
 
-  /* Actions: "Not junk", "Send unsent" and "Ignore warning" are links,
-     calendar answers are buttons. Both become quiet pills. */
-  .notificationBar > span:not(.show-remote-content, .always-display) > a,
-  .notificationBar > button {
-    display: inline-block !important;
-    margin: 2px 0 2px 4px !important;
-    padding: 1px 10px !important;
-    border: 0 !important;
-    border-radius: 6px !important;
-    background-color: light-dark(rgba(0, 0, 0, 0.09), rgba(255, 255, 255, 0.13)) !important;
-    color: inherit !important;
-    font: inherit !important;
-    text-decoration: none !important;
-  }
+    /* "Forward this conversation - Print this conversation": small gray text,
+       accent colour on hover */
+    .bottom-links {
+      font-size: 1.1rem !important;
+      color: light-dark(#6e6e73, #a1a1a8) !important;
+    }
 
-  .notificationBar > span:not(.show-remote-content, .always-display) > a:hover,
-  .notificationBar > button:hover {
-    background-color: light-dark(rgba(0, 0, 0, 0.15), rgba(255, 255, 255, 0.2)) !important;
-  }
+    .bottom-links .link {
+      color: inherit !important;
+    }
 
-  /* Scam warning and OpenPGP/S/MIME problems stay red, as a soft tint
-     with a red icon instead of a solid red bar */
-  .phishingBar,
-  .openpgpBar {
-    background-color: color-mix(in srgb, light-dark(#c4152d, #ff6b7a) 13%, light-dark(#ffffff, #1c1c1e)) !important;
-  }
+    .bottom-links .link:hover,
+    .bottom-links .link:focus {
+      color: light-dark(AccentColor, color-mix(in srgb, AccentColor, white 40%)) !important;
+    }
 
-  .phishingBar > svg-icon,
-  .openpgpBar > svg-icon {
-    color: light-dark(#c4152d, #ff6b7a) !important;
-  }
+    /* ---------- Expanded reply form ---------- */
 
-  /* Doubled class to outrank the :not() selector of the pills above */
-  .phishingBar.notificationBar > span > a {
-    background-color: color-mix(in srgb, light-dark(#c4152d, #ff6b7a) 18%, transparent) !important;
-  }
+    /* "to" and "subject" rows: plain gray label, field with no fill and one
+       soft outline.
+       The row height comes from its line height (24px in the add-on). */
+    .headerField {
+      line-height: 3.2rem !important;
+    }
 
-  .phishingBar.notificationBar > span > a:hover {
-    background-color: color-mix(in srgb, light-dark(#c4152d, #ff6b7a) 28%, transparent) !important;
-  }
+    .headerField label {
+      background-color: transparent !important;
+      border-color: transparent !important;
+      color: light-dark(#6e6e73, #a1a1a8) !important;
+    }
 
-  /* ---------- Reply area ---------- */
+    .headerEntry {
+      border-color: light-dark(#d9d9de, #48484d) !important;
+      border-radius: 8px !important;
+      background-color: transparent !important;
+      color: light-dark(#1d1d1f, #f2f2f4) !important;
+    }
 
-  /* Reply, reply-all, reply-to-list and forward arrows under each message:
-     hidden, because the arrow next to the time and the reply fields below do
-     the same job, and forward is in the message's own menu. The "edit draft"
-     button stays. */
-  .footerActions action-button:not([type="draft"]) {
-    display: none !important;
-  }
+    .headerEntry > input {
+      background-color: transparent !important;
+      color: inherit !important;
+      padding-inline-start: 10px !important;
+    }
 
-  /* Reply strip: no tinted band, no line above it, collapsed or expanded */
-  .quickReply:not(.disabled) {
-    background-color: transparent !important;
-    border-top-color: transparent !important;
-    padding: 4px 10px 10px !important;
-  }
+    /* Message box */
+    .textAreaWrapper > textarea {
+      border-color: light-dark(#d9d9de, #48484d) !important;
+      border-radius: 10px !important;
+      padding: 10px 14px !important;
+      background-color: transparent !important;
+      color: light-dark(#1d1d1f, #f2f2f4) !important;
+    }
 
-  /* Reply field: plain text, no fill and no outline. The label lines up
-     with the message text and darkens on hover. */
-  .replyBox {
-    box-sizing: border-box !important;
-    height: 40px !important;
-    min-height: 40px !important;
-    line-height: 40px !important;
-    padding: 0 !important;
-    border-color: transparent !important;
-    text-align: start !important;
-    font-size: 1.3rem !important;
-    background-color: transparent !important;
-    color: light-dark(#6e6e73, #a1a1a8) !important;
-  }
+    /* The add-on removes the focus outline and tints the border instead.
+       A soft accent ring shows which field has focus. */
+    .headerEntry:focus-within,
+    .textAreaWrapper > textarea:focus {
+      box-shadow: 0 0 0 2px color-mix(in srgb, light-dark(AccentColor, color-mix(in srgb, AccentColor, white 40%)) 45%, transparent) !important;
+    }
 
-  .replyBox:hover,
-  .replyBox:focus-visible {
-    color: light-dark(#1d1d1f, #f2f2f4) !important;
-  }
+    /* Buttons: send is the main action, discard is quiet */
+    .buttons > button.send,
+    .buttons > button.discard {
+      border-color: transparent !important;
+      border-radius: 8px !important;
+      padding: 0.5em 1.2em !important;
+    }
 
-  /* "Forward this conversation - Print this conversation": small gray text,
-     accent colour on hover */
-  .bottom-links {
-    font-size: 1.1rem !important;
-    color: light-dark(#6e6e73, #a1a1a8) !important;
-  }
+    .buttons > button.send {
+      background-color: AccentColor !important;
+      color: AccentColorText !important;
+    }
 
-  .bottom-links .link {
-    color: inherit !important;
-  }
+    .buttons > button.discard {
+      background-color: transparent !important;
+      color: light-dark(#6e6e73, #a1a1a8) !important;
+    }
 
-  .bottom-links .link:hover,
-  .bottom-links .link:focus {
-    color: light-dark(AccentColor, color-mix(in srgb, AccentColor, white 40%)) !important;
-  }
-
-  /* ---------- Expanded reply form ---------- */
-
-  /* "to" and "subject" rows: plain gray label, field with no fill and one
-     soft outline.
-     The row height comes from its line height (24px in the add-on). */
-  .headerField {
-    line-height: 3.2rem !important;
-  }
-
-  .headerField label {
-    background-color: transparent !important;
-    border-color: transparent !important;
-    color: light-dark(#6e6e73, #a1a1a8) !important;
-  }
-
-  .headerEntry {
-    border-color: light-dark(#d9d9de, #48484d) !important;
-    border-radius: 8px !important;
-    background-color: transparent !important;
-    color: light-dark(#1d1d1f, #f2f2f4) !important;
-  }
-
-  .headerEntry > input {
-    background-color: transparent !important;
-    color: inherit !important;
-    padding-inline-start: 10px !important;
-  }
-
-  /* Message box */
-  .textAreaWrapper > textarea {
-    border-color: light-dark(#d9d9de, #48484d) !important;
-    border-radius: 10px !important;
-    padding: 10px 14px !important;
-    background-color: transparent !important;
-    color: light-dark(#1d1d1f, #f2f2f4) !important;
-  }
-
-  /* The add-on removes the focus outline and tints the border instead.
-     A soft accent ring shows which field has focus. */
-  .headerEntry:focus-within,
-  .textAreaWrapper > textarea:focus {
-    box-shadow: 0 0 0 2px color-mix(in srgb, light-dark(AccentColor, color-mix(in srgb, AccentColor, white 40%)) 45%, transparent) !important;
-  }
-
-  /* Buttons: send is the main action, discard is quiet */
-  .buttons > button.send,
-  .buttons > button.discard {
-    border-color: transparent !important;
-    border-radius: 8px !important;
-    padding: 0.5em 1.2em !important;
-  }
-
-  .buttons > button.send {
-    background-color: AccentColor !important;
-    color: AccentColorText !important;
-  }
-
-  .buttons > button.discard {
-    background-color: transparent !important;
-    color: light-dark(#6e6e73, #a1a1a8) !important;
-  }
-
-  .buttons > button.discard:hover {
-    filter: none !important;
-    background-color: light-dark(rgba(0, 0, 0, 0.06), rgba(255, 255, 255, 0.1)) !important;
-    color: light-dark(#1d1d1f, #f2f2f4) !important;
+    .buttons > button.discard:hover {
+      filter: none !important;
+      background-color: light-dark(rgba(0, 0, 0, 0.06), rgba(255, 255, 255, 0.1)) !important;
+      color: light-dark(#1d1d1f, #f2f2f4) !important;
+    }
   }
 }
