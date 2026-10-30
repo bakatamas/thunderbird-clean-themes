@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Clean Mono Light",
   "description": "Fewer borders and a single surface colour everywhere. Light.",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "author": "Tamás Baka",
   "browser_specific_settings": {
     "gecko": {

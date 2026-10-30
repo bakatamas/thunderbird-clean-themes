@@ -1,6 +1,6 @@
 # conversations-clean.css
 
-Version 1.1.6. Part of the Clean theme collection by Tamás Baka. Licensed under the Mozilla Public License 2.0.
+Version 1.1.7. Part of the Clean theme collection by Tamás Baka. Licensed under the Mozilla Public License 2.0.
 
 An optional companion to the Clean themes (**Clean Light**, **Clean Dark**, their single-surface variants **Clean Mono Light** and **Clean Mono Dark**, and **Clean Auto** and **Clean Mono Auto**, which follow the system light or dark setting). It restyles the reader of the [Thunderbird Conversations](https://addons.thunderbird.net/thunderbird/addon/gmail-conversation-view/) add-on so it matches the themes.
 

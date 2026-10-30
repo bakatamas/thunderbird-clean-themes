@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.7 (2026-10-30)
+
+- Automatic updates: the themes now update themselves like any other add-on. Thunderbird checks once a day, or right away with Check for Updates in the Add-ons and Themes gear menu. Install 1.1.7 by hand once; later versions arrive on their own. The look is unchanged.
+
 ## 1.1.6 (2026-10-30)
 
 - Compose window on macOS: the toolbar slid up into the title bar, so the buttons overlapped the window title and the traffic lights. It now sits below the title again. Other systems are unchanged.
