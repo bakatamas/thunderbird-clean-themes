@@ -412,8 +412,8 @@
 
   /* Menu bar and toolbar: the same 16px gutter from the window edge as
      the page below, room above the menu bar and around the toolbar
-     buttons. Padding on
-     each toolbar, not the toolbox, so Mono's tint on the toolbars covers it. */
+     buttons. Padding on each toolbar, not the toolbox, so Mono's tint on
+     the toolbars covers it. */
   #compose-toolbox > toolbar {
     padding-inline: 16px !important;
   }
@@ -424,6 +424,13 @@
 
   #composeToolbar2 {
     padding-block: 6px !important;
+  }
+
+  /* macOS only (#titlebar exists only there): Thunderbird pulls this
+     toolbar up 22px under its own title bar and pads it back down. Keep
+     that padding on top of ours, or the buttons overlap the title. */
+  #titlebar ~ #composeToolbar2 {
+    padding-block-start: calc(22px + 6px) !important;
   }
 
   #composeToolbar2 > .toolbarbutton-1 {
