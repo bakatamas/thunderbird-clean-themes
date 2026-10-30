@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Clean Mono Auto",
   "description": "Fewer borders, a single surface colour everywhere and one accent colour. Follows the system light or dark setting.",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "author": "Tamás Baka",
   "browser_specific_settings": {
     "gecko": {
