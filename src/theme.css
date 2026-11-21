@@ -25,16 +25,18 @@
     --cl-pill: light-dark(rgba(0, 0, 0, 0.09), rgba(255, 255, 255, 0.13));
     --cl-field: light-dark(rgba(0, 0, 0, 0.06), rgba(255, 255, 255, 0.1));
     --cl-radius: 7px;
-    /* Accent: the system accent colour (AccentColor, with AccentColorText
-       for text on top of it). "fill" is for filled areas such as the
+    /* Accent: the one chosen under Settings > Appearance > Accent colour.
+       Thunderbird puts it in --selected-item-color (with
+       --selected-item-text-color for text on top of it); the default,
+       "follow the system", is AccentColor/AccentColorText. Read, never set,
+       so the setting keeps working. "fill" is for filled areas such as the
        selected message; "ink" is for icons and text on the surface, and is
        mixed toward white in dark mode so a dark accent stays readable.
-       Thanks to u/KenzieDamage on Reddit for this and the status bar fix below. */
-    --cl-accent: AccentColor;
-    --cl-accent-text: AccentColorText;
-    --cl-accent-ink: light-dark(AccentColor, color-mix(in srgb, AccentColor, white 40%));
-    --selected-item-color: var(--cl-accent) !important;
-    --selected-item-text-color: var(--cl-accent-text) !important;
+       Thanks to u/KenzieDamage on Reddit for the system accent idea and the
+       status bar fix below. */
+    --cl-accent: var(--selected-item-color, AccentColor);
+    --cl-accent-text: var(--selected-item-text-color, AccentColorText);
+    --cl-accent-ink: light-dark(var(--cl-accent), color-mix(in srgb, var(--cl-accent), white 40%));
     --new-subject-color: var(--cl-accent-ink) !important;
     --in-content-accent-color: var(--cl-accent) !important;
     --in-content-focus-outline-color: var(--cl-accent-ink) !important;
