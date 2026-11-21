@@ -293,9 +293,12 @@
     margin-inline: 8px !important;
   }
 
-  /* Account rows use a separate colour variable; bring them in line. */
-  #folderTree li[data-server-type] > .container > .icon {
-    --icon-color: var(--cl-accent-ink) !important;
+  /* Account rows use a separate colour variable; default it to the accent.
+     Not !important: an account colour (Account Settings) is set inline on
+     the icon and must win. [data-server-key] only adds specificity over
+     Thunderbird's own rule, which has the same selector otherwise. */
+  #folderTree li[data-server-type][data-server-key] > .container > .icon {
+    --icon-color: var(--cl-accent-ink);
   }
 
   /* Account names are bold by default, which stacks with bold unread folders. */
