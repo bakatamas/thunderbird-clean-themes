@@ -749,6 +749,12 @@
   }
 
   /* ---------- 6b. Today pane ---------- */
+  /* Space between the pane's content and its edges, on both sides so the
+     centred New Event button and day headings stay centred. */
+  #today-pane-panel {
+    padding-inline: 10px !important;
+  }
+
   /* No lines between the parts of the events section: below the
      Events / Tasks header, below the date box (or mini-month), and above
      the event list. Colour only, so the layout does not move. The splitter
