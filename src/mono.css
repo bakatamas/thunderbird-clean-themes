@@ -11,14 +11,16 @@
  * is the only difference.
  * ================================================================ */
 @media not (prefers-contrast) {
-  /* One surface: tab strip, spaces bar, folder pane and status bar take the
-     content colour instead of a tint. Only the window header keeps it. */
+  /* One surface: tab strip, folder pane and status bar take the content
+     colour instead of a tint. Only the window header and the spaces bar
+     keep it. */
   :root {
     --cl-chrome: var(--cl-content);
     --cl-header: light-dark(#f0f0f3, #29292c);
-    /* The spaces bar is drawn on top of the window's left edge. Transparent,
-       so the header band and the content colour show through it. */
-    --spaces-bg-color: transparent !important;
+    /* The spaces bar runs down the window's left edge from the header band,
+       so it takes the header colour: one tinted band along the top and
+       left, with no break where the header ends. */
+    --spaces-bg-color: var(--cl-header) !important;
   }
 
   /* The window itself is transparent behind the spaces bar (Betterbird keeps
