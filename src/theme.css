@@ -762,6 +762,28 @@
     border-block-start-color: transparent !important;
   }
 
+  /* New Event button centred; it is the only item in its toolbar. The space
+     above it matches the space below: there, the toolbar's 4px and the
+     button's 1px are followed by the first day heading's top padding (3px,
+     6px or 12px by density), so that padding is added above as well, and the
+     button's top margin is cut from 2px to the 1px it has below. */
+  #agenda-toolbar {
+    justify-content: center !important;
+    padding-block-start: 10px !important;
+  }
+
+  :root[uidensity="compact"] #agenda-toolbar {
+    padding-block-start: 7px !important;
+  }
+
+  :root[uidensity="touch"] #agenda-toolbar {
+    padding-block-start: 16px !important;
+  }
+
+  #todaypane-new-event-button {
+    margin-block-start: 1px !important;
+  }
+
   /* Current date box at the top: no gray tint. */
   #mini-day-image {
     background-color: transparent !important;
