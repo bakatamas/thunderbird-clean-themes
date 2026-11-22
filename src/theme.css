@@ -748,6 +748,66 @@
     }
   }
 
+  /* ---------- 6b. Today pane ---------- */
+  /* No lines between the parts of the events section: below the
+     Events / Tasks header, below the date box (or mini-month), and above
+     the event list. Colour only, so the layout does not move. The splitter
+     line between events and tasks stays. */
+  #today-pane-panel > .sidebar-header,
+  #agenda-panel .today-subpane {
+    border-block-end-color: transparent !important;
+  }
+
+  #agenda {
+    border-block-start-color: transparent !important;
+  }
+
+  /* New Event button centred; it is the only item in its toolbar. The space
+     above it matches the space below: there, the toolbar's 4px and the
+     button's 1px are followed by the first day heading's top padding (3px,
+     6px or 12px by density), so that padding is added above as well, and the
+     button's top margin is cut from 2px to the 1px it has below. */
+  #agenda-toolbar {
+    justify-content: center !important;
+    padding-block-start: 10px !important;
+  }
+
+  :root[uidensity="compact"] #agenda-toolbar {
+    padding-block-start: 7px !important;
+  }
+
+  :root[uidensity="touch"] #agenda-toolbar {
+    padding-block-start: 16px !important;
+  }
+
+  #todaypane-new-event-button {
+    margin-block-start: 1px !important;
+  }
+
+  /* Tasks: no lines above and below the column headers, and bold header
+     text. The line above is the top border of the task box; the one below
+     is an inset shadow on each column header. The lines between the columns
+     stay. */
+  #calendar-task-tree-detail {
+    border-block-start-color: transparent !important;
+  }
+
+  #unifinder-todo-tree treecol {
+    box-shadow: none !important;
+    font-weight: bold !important;
+  }
+
+  /* Current date box at the top: no gray tint. */
+  #mini-day-image {
+    background-color: transparent !important;
+  }
+
+  /* Events: the day headings (Today, Tomorrow, dates) lose the button-coloured
+     band; the bold text alone marks them. */
+  .agenda-date-header {
+    background-color: transparent !important;
+  }
+
   /* ---------- 7. Message list (card view) ---------- */
   #threadTree[rows="thread-card"] {
     /* Inset hairline between rows */

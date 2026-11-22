@@ -72,4 +72,10 @@
     background-color: var(--cl-content) !important;
     padding-inline-start: 10px !important;
   }
+
+  /* Space between the pane's content and its edges, on both sides so the
+    centred New Event button and day headings stay centred. */
+  #today-pane-panel {
+    padding-inline: 10px !important;
+  }
 }
