@@ -748,6 +748,13 @@
     }
   }
 
+  /* ---------- 6b. Today pane ---------- */
+  /* Events: the day headings (Today, Tomorrow, dates) lose the button-coloured
+     band; the bold text alone marks them. */
+  .agenda-date-header {
+    background-color: transparent !important;
+  }
+
   /* ---------- 7. Message list (card view) ---------- */
   #threadTree[rows="thread-card"] {
     /* Inset hairline between rows */
