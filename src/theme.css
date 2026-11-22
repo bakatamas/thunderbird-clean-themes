@@ -311,11 +311,13 @@
     background-color: color-mix(in srgb, var(--selected-item-color) 25%, transparent) !important;
   }
 
-  /* Counts: plain numbers. Unread in the accent colour, total in gray. */
+  /* Counts: plain numbers. Unread in the accent colour, total in gray.
+     Same size as the folder name; Thunderbird shrinks them to 0.85em. */
   .folder-count-badge {
     background-color: transparent !important;
     border: none !important;
     padding-inline: 2px !important;
+    font-size: 1em !important;
   }
 
   .unread-count {
