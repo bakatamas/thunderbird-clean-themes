@@ -784,6 +784,19 @@
     margin-block-start: 1px !important;
   }
 
+  /* Tasks: no lines above and below the column headers, and bold header
+     text. The line above is the top border of the task box; the one below
+     is an inset shadow on each column header. The lines between the columns
+     stay. */
+  #calendar-task-tree-detail {
+    border-block-start-color: transparent !important;
+  }
+
+  #unifinder-todo-tree treecol {
+    box-shadow: none !important;
+    font-weight: bold !important;
+  }
+
   /* Current date box at the top: no gray tint. */
   #mini-day-image {
     background-color: transparent !important;
