@@ -842,4 +842,23 @@
       color: inherit !important;
     }
   }
+
+  /* ---------- 8. Message header ---------- */
+  /* Reply, Forward, Archive, Junk, Delete, More: no outline. Thunderbird
+     draws it in these two colours (resting and hover); the hover tint
+     remains, so the buttons still react. Split buttons such as Reply All
+     lose the line between their halves too. */
+  #messageHeader,
+  #headingWrapper {
+    --toolbarbutton-header-bordercolor: transparent !important;
+    --toolbarbutton-active-bordercolor: transparent !important;
+  }
+
+  /* Space between the buttons and the sender. They share one row that
+     wraps, and in a reader narrower than 768px it becomes a column with the
+     buttons on top; Thunderbird puts no gap between the lines in either
+     case. Only the vertical gap is set, so side by side nothing moves. */
+  #headerSenderToolbarContainer {
+    row-gap: 12px !important;
+  }
 }
