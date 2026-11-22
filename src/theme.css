@@ -749,6 +749,24 @@
   }
 
   /* ---------- 6b. Today pane ---------- */
+  /* No lines between the parts of the events section: below the
+     Events / Tasks header, below the date box (or mini-month), and above
+     the event list. Colour only, so the layout does not move. The splitter
+     line between events and tasks stays. */
+  #today-pane-panel > .sidebar-header,
+  #agenda-panel .today-subpane {
+    border-block-end-color: transparent !important;
+  }
+
+  #agenda {
+    border-block-start-color: transparent !important;
+  }
+
+  /* Current date box at the top: no gray tint. */
+  #mini-day-image {
+    background-color: transparent !important;
+  }
+
   /* Events: the day headings (Today, Tomorrow, dates) lose the button-coloured
      band; the bold text alone marks them. */
   .agenda-date-header {
